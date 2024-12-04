@@ -1,0 +1,34 @@
+vmType: $VM_CONFIG_TYPE
+
+os: "Linux"
+arch: $VM_CONFIG_ARCH
+cpu: $VM_CONFIG_CPU
+memory: $VM_CONFIG_MEM
+
+images:
+- location: $VM_URL
+  arch: "aarch64"
+
+mounts:
+- location: $VM_MOUNT_PATH
+  writable: true
+- location: "/tmp/lima"
+  writable: true
+mountType: "reverse-sshfs"
+
+provision:
+- mode: system
+  script: |
+    #!/bin/bash
+    set -eux -o pipefail
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get install -y llvm-dev libclang-dev clang build-essential liburing-dev liburing2
+- mode: user
+  script: |
+    #!/bin/bash
+    set -eux -o pipefail
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    rustup component add  --toolchain nightly-2024-03-26-$VM_CONFIG_ARCH-unknown-linux-gnu miri
+containerd:
+  system: false
+  user: false

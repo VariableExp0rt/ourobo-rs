@@ -1,0 +1,21 @@
+[package]
+name = "liburing-sys"
+version = "0.1.0"
+authors = ["Liam Baker <misguided.dev@protonmail.com>"]
+links = "uring"
+build = "build.rs"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/VariableExp0rt/ourobo-rs"
+homepage = "https://github.com/VariableExp0rt/ourobo-rs/liburing-sys"
+description = """
+FFI Bindings to the io_uring system interface for storage device I/O
+"""
+
+categories = ["external-ffi-bindings", "ffi"]
+
+[lib]
+name = "liburing_sys"
+path = "lib.rs"
+
+[build-dependencies]
+bindgen = {workspace = true}
